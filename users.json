@@ -19,5 +19,12 @@
         "email": "khaled@gmail.com",
         "password": "MQaiuJZ2Escq1VHMPb7gHVWsszj/OI4b0i7utgfhUGo=",
         "role": "admin"
+    },
+    {
+        "id": 4,
+        "name": "yousef",
+        "email": "yw012276@gmail.com",
+        "password": "jgZ+q3Af0NROrodCbo897vB03XBxep0FiWWSgl49KA8=",
+        "role": "admin"
     }
 ]

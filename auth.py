@@ -2,7 +2,7 @@ import json
 import hashlib
 import base64
 from termcolor import colored
-
+import crud_users
 # File to store user data
 DATA_FILE = "users.json"
 
@@ -18,15 +18,7 @@ def initialize_data_file():
         with open(DATA_FILE, "w") as file:
             json.dump([], file)
 
-# Read user data from the file
-def read_users():
-    with open(DATA_FILE, "r") as file:
-        return json.load(file)
 
-# Write user data to the file
-def write_users(users):
-    with open(DATA_FILE, "w") as file:
-        json.dump(users, file, indent=4)
 
 # Encrypt the password (hashing with salt)
 def encrypt_password(password):
@@ -55,7 +47,7 @@ def is_valid_email(email):
 
 # Register a new user
 def register():
-    users = read_users()
+    users = crud_users.read_users()
 
     name = input("Enter your name: ").strip()
     email = input("Enter your email: ").strip()
@@ -90,13 +82,13 @@ def register():
     }
 
     users.append(new_user)
-    write_users(users)
+    crud_users.write_users(users)
     print(colored("Registration successful!","green"))
 
 # Login existing user
 def login():
     global current_user
-    users = read_users()
+    users = crud_users.read_users()
 
     email = input("Enter your email: ").strip()
     password = input("Enter your password: ").strip()
