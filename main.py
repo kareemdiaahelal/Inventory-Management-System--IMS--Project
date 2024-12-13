@@ -1,0 +1,3 @@
+import auth
+
+auth.main()
