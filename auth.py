@@ -1,6 +1,5 @@
 import json
 import hashlib
-import base64
 from termcolor import colored
 import crud_users
 # File to store user data
@@ -22,18 +21,11 @@ def initialize_data_file():
 
 # Encrypt the password (hashing with salt)
 def encrypt_password(password):
-    salt = base64.b64encode(hashlib.sha256(password.encode()).digest())
-    return base64.b64encode(hashlib.pbkdf2_hmac(
-        'sha256', password.encode(), salt, 100000
-    )).decode()
+    return hashlib.sha256(password.encode()).hexdigest()
 
 # Verify password by comparing hashes
 def verify_password(password, hashed_password):
-    salt = base64.b64encode(hashlib.sha256(password.encode()).digest())
-    hashed_attempt = base64.b64encode(hashlib.pbkdf2_hmac(
-        'sha256', password.encode(), salt, 100000
-    )).decode()
-    return hashed_attempt == hashed_password
+    return encrypt_password(password) == hashed_password
 
 # Auto-increment ID generator
 def generate_user_id(users):

@@ -1,5 +1,6 @@
 import json
-
+from termcolor import colored
+DATA_FILE = 'products.json'
 def main():
     while True:
         print("Enter the operation you want to do in IMS:")
@@ -35,7 +36,7 @@ def user_choice(choice):
         view_products()
         product_id = int(input("Enter product ID to edit: "))
         new_name = input("Enter new name (press Enter to not edit name): ")
-        new_price = float(input("Enter new price (press Enter to not edit price): "))
+        new_price =  float(input("Enter new price (press Enter to not edit price): "))
         new_quantity = int(input("Enter new quantity (press Enter to not edit quantity): "))
         update_product(product_id, new_name, new_price, new_quantity)
 
@@ -49,26 +50,57 @@ def user_choice(choice):
         print("Please choose an appropriate option from the above list")
         main()
 
-def view_products():
-    f = open("products.json", "r")
-    products = json.load(f)
-    print("ID\tName\tPrice\tQuantity")
+# def view_products():
+#     f = open("products.json", "r")
+#     products = json.load(f)
+#     print("ID\tName\tPrice\tQuantity")
+#     for product in products:
+#         print(f"{product['id']}\t{product['name']}\t{product['price']}\t{product['quantity']}")
+
+def view_products(mode='r'):
+    try:
+        with open(DATA_FILE, "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        if mode == 'r':
+            print(colored(f"Error: {DATA_FILE} not found.", "red"))
+        return []
+    except json.JSONDecodeError:
+        print(colored(f"Error: {DATA_FILE} is not valid JSON.", "red"))
+        return []
+
+def write_products(products):
+    try:
+        with open(DATA_FILE, "w") as file:
+            json.dump(products, file, indent=4)
+    except Exception as e:
+        print(colored(f"Error writing to {DATA_FILE}: {str(e)}", "red"))
+
+def edit_product(new_product):
+    print(new_product)
+    products = view_products('r')
     for product in products:
-        print(f"{product['id']}\t{product['name']}\t{product['price']}\t{product['quantity']}")
+        if product['id'] == new_product['id']:
+            index=products.index(product)
+             products[inx]= new_product
+        else:
+            print(colored("product not updated .",'red'))
+    write_products(products)
+    print(colored("product updated successfully.",'green'))
+
+    
 
 def add_product(name, price, quantity):
+    products = view_products('w')
     product = {
         "name": name,
         "price": price,
         "quantity": quantity
     }
-    f = open("products.json", "r")
-    products = json.load(f)
+    product['id'] = len(products) + 1
     products.append(product)
-    f = open("products.json", "w")
-    json.dump(products, f, indent = 4)
-    f.close()
-    print("Product added successfully!")
+    write_products(products)
+    print(colored("Product added successfully!",'green'))
 
 def delete_product():
     f = open("products.json", "r")
@@ -89,16 +121,14 @@ def delete_product():
         for product in products:
             if product['id'] == product_id:
                 products.remove(product)
-                print("Product deleted successfully!")
+                print(colored("Product deleted successfully!",'green'))
                 break
             else:
-                print("Product not found!")
+                print(colored("Product not found!",'red'))
                 break
     else:
-        print("Please choose 1 or 2")
-    f = open("products.json", "w")
-    json.dump(products, f, indent = 4) 
-    f.close()
+        print(colored("Please choose 1 or 2",'yellow'))
+    write_products(products)
 
 def product_search():
     search_by = int(input("Do you want to search by Name or by ID?(Please choose 1 or 2)\n1.Search by Name.\n2.Search by ID.\nAnswer: "))
@@ -130,30 +160,28 @@ def search_by_id(id):
     for product in products:
         if product['id'] == id:
             print(f"ID: {product['id']}, Name: {product['name']}, Price: {product['price']}, Quantity: {product['quantity']}")
-            break
+            return product
         else:
             print("No products found with that id")
             break
     f.close()
 
 def update_product(product_id, new_name=None, new_price=None, new_quantity=None):
-    f = open("products.json","r")
-    products = json.load(f)
-    for product in products:
-        if product['id'] == product_id:
-            if new_name is not None:
-                product['name'] = new_name
-            if new_price is not None:
-                product['price'] = new_price
-            if new_quantity is not None:
-                product['quantity'] = new_quantity
-            break
-        else:
-            print("No product with that ID was found")
+    product= search_by_id(product_id)
+    if not product:
+            print("prouct is not found")
+            return 
+    if new_name is not None:
+        product['name'] = new_name
+    if new_price is not None:
+        product['price'] = new_price
+    if new_quantity is not None:
+        product['quantity'] = new_quantity 
 
-    f = open("products.json", "w")
-    json.dump(products, f, indent = 4)
-    f.close()
+          
+    edit_product(product)
+         
+
 
 def check_low_stock():
     f = open("products.json", "r")
