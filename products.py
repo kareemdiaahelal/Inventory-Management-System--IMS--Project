@@ -82,7 +82,7 @@ def edit_product(new_product):
     for product in products:
         if product['id'] == new_product['id']:
             index=products.index(product)
-             products[inx]= new_product
+            products[index]= new_product
         else:
             print(colored("product not updated .",'red'))
     write_products(products)
