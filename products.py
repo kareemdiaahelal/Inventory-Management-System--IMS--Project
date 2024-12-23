@@ -19,7 +19,7 @@ def main():
 
 def user_choice(choice):
     if choice == 1:
-        products = kareem() 
+        products = role_product_view() 
         print(products)         
 
     elif choice == 2:
@@ -72,7 +72,7 @@ def view_products(mode='r'):
         print(colored(f"Error: {DATA_FILE} is not valid JSON.", "red"))
         return []
 
-def kareem():
+def role_product_view():
     products = view_products()
     if auth.current_user["role"] == "admin":
         return products
@@ -187,42 +187,6 @@ def update_product(product_id, new_name=None, new_price=None, new_quantity=None)
           
     edit_product(product)
          
-
-
-def check_low_stock():
-    f = open("products.json", "r")
-    products = json.load(f)
-    low_stock_products = []
-    print("\n--- Low Stock Products ---")
-    for product in products:
-        if product['quantity'] < 5:
-            low_stock_products.append(product)
-    if low_stock_products:
-        print(f"ID\tName\tQuantity")
-        for product in low_stock_products:
-            print(f"{product['id']}\t{product['name']}\t{product['quantity']}")
-    else:
-        print("   No low stock products   ")
-
-def notify_low_stock(threshold=5):
-    f = open("products.json", "r")
-    products = json.load(f)
-
-    low_stock_products = []
-
-    for product in products:
-        if product['quantity'] < threshold:
-            low_stock_products.append(product)
-
-    if low_stock_products:
-        print(f"Products with stock below {threshold}:")
-        print("ID\tName\tPrice\tQuantity")
-        for product in low_stock_products:
-            print(f"{product['id']}\t{product['name']}\t{product['price']}\t{product['quantity']}")
-    else:
-        print(f"All products have stock above the threshold of {threshold}.")
-
-
 def sell_item():
     products = view_products()
     user_product = product_search()  # Find the product to sell

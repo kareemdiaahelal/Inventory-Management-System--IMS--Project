@@ -43,18 +43,22 @@ def register():
     if not name or not email or not password:
         print(colored("All fields are required.", "red"))
         return
-
+    if not validation.is_valid_name(name):
+        print(colored("Invalid name format.", "red"))
+        return
     if not validation.is_valid_email(email):
         print(colored("Invalid email format.", "red"))
         return
-    
     if not validation.is_valid_age(age):
         print(colored("Invalid age. Age must be a positive number.", "red"))
         return
+    if not validation.is_valid_password(password):
+            print(colored("Invalid password format.", "red"))
+            return
+    if not validation.is_valid_role(role):
+            print(colored("Invalid role format.", "red"))
+            return
 
-    if role not in ["admin", "user"]:
-        print(colored("Role must be either 'admin' or 'user'.", "red"))
-        return
 
     if any(user["email"] == email for user in users):
         print(colored("This email is already in use.", "red"))
