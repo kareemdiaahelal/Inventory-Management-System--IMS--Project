@@ -23,10 +23,23 @@ def user_choice(choice):
         print(products)         
 
     elif choice == 2:
-        name = input("Enter product name: ")
-        price = float(input("Enter product price: "))
-        quantity = int(input("Enter product quantity: "))
-        add_product(name, price, quantity)
+        try:
+            name = input("Enter product name: ")
+
+            # Handling price input
+            price = float(input("Enter product price: "))
+            if price < 0:
+                raise ValueError("Price cannot be negative.")
+
+            # Handling quantity input
+            quantity = int(input("Enter product quantity: "))
+            if quantity < 0:
+                raise ValueError("Quantity cannot be negative.")
+
+            add_product(name, price, quantity)
+
+        except ValueError as e:
+            print(f"Invalid input: {e}. Please try again.")
 
     elif choice == 3:
         view_products()
