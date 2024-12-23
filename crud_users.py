@@ -1,7 +1,7 @@
 import json
 from termcolor import colored
 from tabulate import tabulate
-
+import auth
 DATA_FILE = "users.json"
 
 def read_users():
@@ -57,7 +57,6 @@ def delete_user_by_email(email):
     if not user:
         print(colored("User not found.", "red"))
         return
-
     users.remove(user)
     write_users(users)
     print(colored("User deleted successfully.", "green"))
@@ -139,7 +138,9 @@ def main():
         elif choice == "5":
             email = input("Enter the user's email: ")
             delete_user_by_email(email)
-
+            if email == auth.current_user["email"]:
+                auth.logout()
+                auth.main()
         elif choice == "6":
             user_id = input("Enter the user's ID: ")
             delete_user_by_id(user_id)

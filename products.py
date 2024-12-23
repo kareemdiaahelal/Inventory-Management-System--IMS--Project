@@ -1,5 +1,7 @@
+
 import json
 from termcolor import colored
+import auth
 DATA_FILE = 'products.json'
 def main():
     while True:
@@ -9,15 +11,16 @@ def main():
         print("3. Remove Product")
         print("4. Search for a product")
         print("5. Edit Product")
-        print("6. Check Low Stock")
-        print("7. Make an Inventory Report")
+        print("6. sell product") # for a single product
+        # print("7. Make an Inventory Report")
         print("8. Exit")
         choice = int(input("Enter your choice: "))
         user_choice(choice)
 
 def user_choice(choice):
     if choice == 1:
-        view_products()           
+        products = kareem() 
+        print(products)         
 
     elif choice == 2:
         name = input("Enter product name: ")
@@ -41,7 +44,7 @@ def user_choice(choice):
         update_product(product_id, new_name, new_price, new_quantity)
 
     elif choice == 6:
-        check_low_stock()
+        sell_item()
 
     elif choice == 8:
         print("Exiting program. Goodbye!")
@@ -69,6 +72,13 @@ def view_products(mode='r'):
         print(colored(f"Error: {DATA_FILE} is not valid JSON.", "red"))
         return []
 
+def kareem():
+    products = view_products()
+    if auth.current_user["role"] == "admin":
+        return products
+    else:
+        return list(filter(lambda product: product.get('createdBy') == auth.current_user['email'], products))
+
 def write_products(products):
     try:
         with open(DATA_FILE, "w") as file:
@@ -88,7 +98,7 @@ def edit_product(new_product):
     write_products(products)
     print(colored("product updated successfully.",'green'))
 
-    
+
 
 def add_product(name, price, quantity):
     products = view_products('w')
@@ -98,6 +108,7 @@ def add_product(name, price, quantity):
         "quantity": quantity
     }
     product['id'] = len(products) + 1
+    product['createdBy'] = auth.current_user['email']
     products.append(product)
     write_products(products)
     print(colored("Product added successfully!",'green'))
@@ -133,30 +144,26 @@ def delete_product():
 def product_search():
     search_by = int(input("Do you want to search by Name or by ID?(Please choose 1 or 2)\n1.Search by Name.\n2.Search by ID.\nAnswer: "))
     if search_by == 1:
-        product_name = input("Enter the name of the product: ")
-        search_by_name(product_name)
+        product_name = input("Enter the name of the product: ").strip()
+        return search_by_name(product_name)
     elif search_by == 2:
         product_id = int(input("Enter the ID of the product: "))
-        search_by_id(product_id)
+        return search_by_id(product_id)
     else:
         print("Please choose 1 or 2")
         user_choice()
 
 def search_by_name(name):
-    f = open("products.json", "r")
-    products = json.load(f)
+    products = view_products()
     for product in products:
-        if product['name'] == name:
+        if product['name'].lower() == name.lower():  # Make search case-insensitive
             print(f"ID: {product['id']}, Name: {product['name']}, Price: {product['price']}, Quantity: {product['quantity']}")
-            break
-        else:
-            print("No products found with that name")
-            break
-    f.close()
+            return product
+    print("No products found with that name")
+    return None
 
 def search_by_id(id):
-    f = open("products.json", "r")
-    products = json.load(f)
+    products = view_products('r')
     for product in products:
         if product['id'] == id:
             print(f"ID: {product['id']}, Name: {product['name']}, Price: {product['price']}, Quantity: {product['quantity']}")
@@ -164,7 +171,6 @@ def search_by_id(id):
         else:
             print("No products found with that id")
             break
-    f.close()
 
 def update_product(product_id, new_name=None, new_price=None, new_quantity=None):
     product= search_by_id(product_id)
@@ -218,36 +224,52 @@ def notify_low_stock(threshold=5):
 
 
 def sell_item():
-    user_sell = input("Do you want to search for a specific product or to view all products?(Choose 1 or 2)\n1.Search for a specific product\n2.View all products\n3.Exit\nAnswer: ")
-    if user_sell == 1:
-        product_search()
-    elif user_sell == 2:
-        view_products()
+    products = view_products()
+    user_product = product_search()  # Find the product to sell
 
+    if user_product:  # If the product is found
+        try:
+            quantity = int(input("Enter the quantity you want to sell: "))
 
-    elif user_sell == 3:
-        print("Exiting program. Goodbye!")
-        exit()
+            if quantity > user_product['quantity']:
+                print(colored("You cannot sell this product with this quantity.", 'yellow'))
+                return
 
+            # Calculate the remaining quantity
+            remaining_quantity = user_product['quantity'] - quantity
+
+            # Warn if the remaining quantity is at or below the threshold
+            if remaining_quantity <= 5:
+                choice = input(
+                    colored(
+                        f"You're going to reach the threshold. The product quantity will be {remaining_quantity} if you proceed.\n"
+                        f"Choose 1 : to proceed.\nChoose 2 : to exit.\nYour choice : ",
+                        'light_yellow'
+                    )
+                ).strip()
+
+                if choice == "2":
+                    print(colored("Transaction cancelled.", 'light_green'))
+                    return
+                elif choice != "1":
+                    print(colored("Invalid choice. Transaction cancelled.", 'light_red'))
+                    return
+
+            # Update the product quantity and save to the file
+            index = products.index(user_product)
+            products[index]['quantity'] = remaining_quantity
+            write_products(products)
+
+            print(colored(f"Product sold successfully with quantity: {quantity}.", 'green'))
+
+        except ValueError:
+            print(colored("Invalid input. Please enter a valid number for the quantity.", 'red'))
     else:
-        print("Please choose 1 or 2, or 3 for exiting")
-        sell_item()
-
-    # do u want to search for an item or view all products?
-    # if found item
-    # choose quantity
-    # quantity - 1
-
-
-
+        print(colored("Product not found.", 'red'))
 
 
 if __name__ == "__main__":
     main()
-# notify_low_stock(7)
-
-
-
 
 
 
@@ -255,8 +277,3 @@ if __name__ == "__main__":
     #     make_inventory_report()
     #     print("Inventory report has been generated.")
     
-
-
-
-# def make_inventory_report():
-

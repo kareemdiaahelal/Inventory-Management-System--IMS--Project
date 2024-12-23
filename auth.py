@@ -67,6 +67,7 @@ def register():
         "id": user_id,
         "name": name,
         "email": email,
+        "age":age,
         "password": hashed_password,
         "role": role
     }
@@ -145,6 +146,7 @@ def logout():
     if is_logged_in():
         print(colored(f"Goodbye {current_user['name']}!", "green"))
         current_user = None
+        return
     else:
         print(colored("No user is currently logged in.", "red"))
 
