@@ -1,37 +1,9 @@
 [
     {
         "id": 1,
-        "name": "moataz",
+        "name": "11",
         "email": "moataz@gmail.com",
-        "password": "qMY1m1SIYhfbJB9iTq2VWRFrc7Pk4z5YkysMaKHwTTk=",
-        "role": "user"
-    },
-    {
-        "id": 2,
-        "name": "ahmed",
-        "email": "ahmed@gmail.com",
-        "password": "0aQrHM3Irsn2eoUolPdo/Wd7AFtBQIzcmeiERzFOmnQ=",
-        "role": "admin"
-    },
-    {
-        "id": 3,
-        "name": "khaled",
-        "email": "khaled@gmail.com",
-        "password": "MQaiuJZ2Escq1VHMPb7gHVWsszj/OI4b0i7utgfhUGo=",
-        "role": "admin"
-    },
-    {
-        "id": 4,
-        "name": "yousef",
-        "email": "yw012276@gmail.com",
-        "password": "jgZ+q3Af0NROrodCbo897vB03XBxep0FiWWSgl49KA8=",
-        "role": "admin"
-    },
-    {
-        "id": 5,
-        "name": "yousef",
-        "email": "you@gmail.com",
-        "password": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+        "password": "ddcb95de703d0c3a1a349da679a668e9f69804e29c0fb93a3100cb644140325a",
         "role": "admin"
     }
 ]

@@ -242,12 +242,8 @@ def sell_item():
 
 
 
-
-
-
-
-
-main()
+if __name__ == "__main__":
+    main()
 # notify_low_stock(7)
 
 
