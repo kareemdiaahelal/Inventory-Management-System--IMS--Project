@@ -15,15 +15,7 @@ html_template = """
     <div class="container mx-auto">
         <h1 class="text-2xl font-bold mb-2">{data_kind}</h1>
         <table class="table-auto w-full border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="border border-gray-300 px-4 py-2">Name</th>
-                    <th class="border border-gray-300 px-4 py-2">Price</th>
-                    <th class="border border-gray-300 px-4 py-2">Quantity</th>
-                    <th class="border border-gray-300 px-4 py-2">ID</th>
-                    <th class="border border-gray-300 px-4 py-2">Created By</th>
-                </tr>
-            </thead>
+            {headers}
             <tbody>
                 {rows}
             </tbody>
@@ -33,6 +25,17 @@ html_template = """
 </html>
 """
 
+products_headers="""
+<thead>
+    <tr class="bg-gray-200">
+        <th class="border border-gray-300 px-4 py-2">Name</th>
+        <th class="border border-gray-300 px-4 py-2">Price</th>
+        <th class="border border-gray-300 px-4 py-2">Quantity</th>
+        <th class="border border-gray-300 px-4 py-2">ID</th>
+        <th class="border border-gray-300 px-4 py-2">Created By</th>
+    </tr>
+</thead>
+"""
 # Generate table rows from the data
 def generate_table_rows_products(data):
     rows = ""
@@ -48,6 +51,17 @@ def generate_table_rows_products(data):
         """
     
     return rows
+users_headers = """
+<thead>
+    <tr class="bg-gray-200">
+        <th class="border border-gray-300 px-4 py-2">ID</th>
+        <th class="border border-gray-300 px-4 py-2">Name</th>
+        <th class="border border-gray-300 px-4 py-2">Email</th>
+        <th class="border border-gray-300 px-4 py-2">Age</th>
+        <th class="border border-gray-300 px-4 py-2">Role</th>
+    </tr>
+</thead>
+"""
 def generate_table_rows_users(data):
     rows = ""
     for item in data:
@@ -67,10 +81,12 @@ def generate_table_rows_users(data):
 def create_report(data,file_name,model):
     try:
         if model=="users":
+            headers=users_headers
             table_rows=generate_table_rows_users(data)
-        else: 
+        else:
+            headers=products_headers
             table_rows = generate_table_rows_products(data)
-        html_content = html_template.format(rows=table_rows, data_kind=f"{model} data")
+        html_content = html_template.format(rows=table_rows, data_kind=f"{model} data",headers=headers)
 
         with open(file_name, "w") as file:
             file.write(html_content)
