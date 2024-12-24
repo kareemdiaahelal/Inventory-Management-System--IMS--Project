@@ -7,7 +7,7 @@ import validation
 
 DATA_FILE = "users.json"
 
-current_user = None
+current_user = None     
 
 def initialize_data_file():
     try:
@@ -53,7 +53,7 @@ def register():
         print(colored("Invalid age. Age must be a positive number.", "red"))
         return
     if not validation.is_valid_password(password):
-            print(colored("Invalid password format.", "red"))
+            print(colored("Invalid password format. password must be with length > 5.", "red"))
             return
     if not validation.is_valid_role(role):
             print(colored("Invalid role format.", "red"))
@@ -108,7 +108,7 @@ def login():
 
 
 def post_login_menu(user):
-    if user['role'] == 'admin':
+    if is_admin():
         print(colored("\n====================== Admin Post-Login Menu ======================", "cyan"))
         print("1. CRUD Users")
         print("2. CRUD Products")
@@ -124,7 +124,7 @@ def post_login_menu(user):
         else:
             print(colored("Invalid choice. Returning to main menu.", "red"))
 
-    elif user['role'] == 'user':
+    elif not is_admin():
         print(colored("\n=== User Post-Login Menu ===", "cyan"))
         print("1. CRUD Products")
         print("2. Logout")
