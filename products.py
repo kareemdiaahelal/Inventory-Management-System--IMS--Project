@@ -11,7 +11,7 @@ def main():
         print("3. Remove Product")
         print("4. Search for a product")
         print("5. Edit Product")
-        print("6. sell product") # for a single product
+        print("6. sell product") 
         # print("7. Make an Inventory Report")
         print("8. Exit")
         choice = int(input("Enter your choice: "))
@@ -66,12 +66,6 @@ def user_choice(choice):
         print("Please choose an appropriate option from the above list")
         main()
 
-# def view_products():
-#     f = open("products.json", "r")
-#     products = json.load(f)
-#     print("ID\tName\tPrice\tQuantity")
-#     for product in products:
-#         print(f"{product['id']}\t{product['name']}\t{product['price']}\t{product['quantity']}")
 
 def view_products(mode='r'):
     try:
@@ -87,7 +81,7 @@ def view_products(mode='r'):
 
 def role_product_view():
     products = view_products()
-    if auth.current_user["role"] == "admin":
+    if auth.is_admin():
         return products
     else:
         return list(filter(lambda product: product.get('createdBy') == auth.current_user['email'], products))
@@ -248,9 +242,3 @@ def sell_item():
 if __name__ == "__main__":
     main()
 
-
-
-# elif choice == 7:
-    #     make_inventory_report()
-    #     print("Inventory report has been generated.")
-    
