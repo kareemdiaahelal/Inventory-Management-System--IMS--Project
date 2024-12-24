@@ -2,6 +2,7 @@ import json
 from termcolor import colored
 from tabulate import tabulate
 import auth
+import Report
 DATA_FILE = "users.json"
 
 def read_users():
@@ -82,7 +83,8 @@ def main():
         print("4. Update User by ID")
         print("5. Delete User by Email")
         print("6. Delete User by ID")
-        print("7. Exit")
+        print("7. Make an Inventory Report")
+        print("8. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -144,8 +146,11 @@ def main():
         elif choice == "6":
             user_id = input("Enter the user's ID: ")
             delete_user_by_id(user_id)
-
         elif choice == "7":
+            file_name="users.html"
+            users_data=read_users()
+            Report.create_report(users_data,file_name,"users")
+        elif choice == "8":
             print("Exiting User Management System.")
             break
 

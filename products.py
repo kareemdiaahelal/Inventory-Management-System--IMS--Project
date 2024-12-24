@@ -2,6 +2,7 @@
 import json
 from termcolor import colored
 import auth
+import Report
 DATA_FILE = 'products.json'
 def main():
     while True:
@@ -12,7 +13,7 @@ def main():
         print("4. Search for a product")
         print("5. Edit Product")
         print("6. sell product") # for a single product
-        # print("7. Make an Inventory Report")
+        print("7. Make an Inventory Report")
         print("8. Exit")
         choice = int(input("Enter your choice: "))
         user_choice(choice)
@@ -58,7 +59,10 @@ def user_choice(choice):
 
     elif choice == 6:
         sell_item()
-
+    elif choice==7:
+        file_name = "products.html"
+        products_data=view_products("r")
+        Report.create_report(products_data,file_name,"products")
     elif choice == 8:
         print("Exiting program. Goodbye!")
     
