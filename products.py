@@ -3,6 +3,8 @@ import json
 from termcolor import colored
 import auth
 import Report
+from tabulate import tabulate
+
 DATA_FILE = 'products.json'
 def main():
     while True:
@@ -20,8 +22,23 @@ def main():
 
 def user_choice(choice):
     if choice == 1:
-        products = role_product_view() 
-        print(products)         
+        try:
+            products = role_product_view()
+            if products:
+                headers = ["ID", "Name", "Price", "Quantity", "Created By"]
+                data = [[
+                    product.get("id"), 
+                    product.get("name"), 
+                    product.get("price"), 
+                    product.get("quantity"), 
+                    product.get("createdBy")
+                ] for product in products]
+                print(tabulate(data, headers=headers, tablefmt="rounded_outline"))
+            else:
+                print(colored("No products found.", "yellow"))
+        except Exception as e:
+                print(colored(f"An error occurred: {e}", "red"))
+       
 
     elif choice == 2:
         try:
@@ -114,6 +131,7 @@ def edit_product(new_product):
 def add_product(name, price, quantity):
     products = view_products('w')
     product = {
+        'id': len(products) + 1,
         "name": name,
         "price": price,
         "quantity": quantity
@@ -167,8 +185,16 @@ def product_search():
 def search_by_name(name):
     products = view_products()
     for product in products:
-        if product['name'].lower() == name.lower():  # Make search case-insensitive
-            print(f"ID: {product['id']}, Name: {product['name']}, Price: {product['price']}, Quantity: {product['quantity']}")
+        if product['name'].lower() == name.lower():
+            headers = ["ID", "Name", "Price", "Quantity", "Created By"]
+            data = [[
+                    product.get("id"), 
+                    product.get("name"), 
+                    product.get("price"), 
+                    product.get("quantity"), 
+                    product.get("createdBy")
+                ]]
+            print(tabulate(data, headers=headers, tablefmt="rounded_outline"))   # Make search case-insensitive
             return product
     print("No products found with that name")
     return None
@@ -177,7 +203,15 @@ def search_by_id(id):
     products = view_products('r')
     for product in products:
         if product['id'] == id:
-            print(f"ID: {product['id']}, Name: {product['name']}, Price: {product['price']}, Quantity: {product['quantity']}")
+            headers = ["ID", "Name", "Price", "Quantity", "Created By"]
+            data = [[
+                    product.get("id"), 
+                    product.get("name"), 
+                    product.get("price"), 
+                    product.get("quantity"), 
+                    product.get("createdBy")
+                ]]
+            print(tabulate(data, headers=headers, tablefmt="rounded_outline"))   # Make search case-insensitive
             return product
         else:
             print("No products found with that id")

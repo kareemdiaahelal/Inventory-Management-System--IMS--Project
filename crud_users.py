@@ -26,7 +26,6 @@ def write_users(users):
 def read_user_by_email(email):
     users = read_users()
     return next((user for user in users if user["email"] == email), None)
-
 def update_user_by_email(email, new_data):
     users = read_users()
     user = next((user for user in users if user["email"] == email), None)
@@ -58,6 +57,7 @@ def delete_user_by_email(email):
     if not user:
         print(colored("User not found.", "red"))
         return
+    
     users.remove(user)
     write_users(users)
     print(colored("User deleted successfully.", "green"))
@@ -86,7 +86,7 @@ def main():
         print("7. Make an Inventory Report")
         print("8. Exit")
 
-        choice = input("Enter your choice: ")
+        choice = input("Enter your choice: ").split()
 
         if choice == "1":
             users = read_users()
@@ -115,7 +115,6 @@ def main():
             age = input("Age: ")
             if age:
                 new_data["age"] = age
-
             if new_data:
                 update_user_by_email(email, new_data)
             else:
@@ -143,19 +142,22 @@ def main():
             if email == auth.current_user["email"]:
                 auth.logout()
                 auth.main()
+
         elif choice == "6":
             user_id = input("Enter the user's ID: ")
             delete_user_by_id(user_id)
+            if user_id == auth.current_user["id"]:
+                auth.logout()
+                auth.main()
+        
         elif choice == "7":
             file_name="users.html"
             users_data=read_users()
             Report.create_report(users_data,file_name,"users")
+        
         elif choice == "8":
             print("Exiting User Management System.")
             break
-
+        
         else:
             print(colored("Invalid choice. Please try again.", "red"))
-
-if __name__ == "__main__":
-    main()
