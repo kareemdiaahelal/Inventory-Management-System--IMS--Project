@@ -1,0 +1,121 @@
+[
+    {
+        "id": 2,
+        "name": "Banana",
+        "price": 0.5,
+        "quantity": 10,
+        "createdBy": "yousef@gmail.com"
+    },
+    {
+        "id": 3,
+        "name": "Chocolate Bar",
+        "price": 1.2,
+        "quantity": 15,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 4,
+        "name": "Energy Drink",
+        "price": 2.0,
+        "quantity": 7,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 5,
+        "name": "Apple",
+        "price": 1.0,
+        "quantity": 12,
+        "createdBy": "yousef@gmail.com"
+    },
+    {
+        "id": 6,
+        "name": "Orange",
+        "price": 0.8,
+        "quantity": 9,
+        "createdBy": "yousef@gmail.com"
+    },
+    {
+        "id": 7,
+        "name": "Chips",
+        "price": 2.5,
+        "quantity": 18,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 8,
+        "name": "Soda",
+        "price": 1.5,
+        "quantity": 5,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 9,
+        "name": "Juice",
+        "price": 2.0,
+        "quantity": 16,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 10,
+        "name": "Grapes",
+        "price": 1.8,
+        "quantity": 20,
+        "createdBy": "yousef@gmail.com"
+    },
+    {
+        "id": 11,
+        "name": "Cookies",
+        "price": 3.0,
+        "quantity": 14,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 12,
+        "name": "Water Bottle",
+        "price": 1.0,
+        "quantity": 11,
+        "createdBy": "yousef@gmail.com"
+    },
+    {
+        "id": 13,
+        "name": "Pineapple",
+        "price": 3.5,
+        "quantity": 8,
+        "createdBy": "yousef@gmail.com"
+    },
+    {
+        "id": 14,
+        "name": "Crackers",
+        "price": 2.2,
+        "quantity": 13,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 15,
+        "name": "Milkshake",
+        "price": 3.8,
+        "quantity": 6,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 16,
+        "name": "Strawberries",
+        "price": 2.5,
+        "quantity": 19,
+        "createdBy": "yousef@gmail.com"
+    },
+    {
+        "id": 17,
+        "name": "Candy",
+        "price": 0.7,
+        "quantity": 17,
+        "createdBy": "kareem@gmail.com"
+    },
+    {
+        "id": 18,
+        "name": "Iced Tea",
+        "price": 2.0,
+        "quantity": 6,
+        "createdBy": "kareem@gmail.com"
+    }
+]

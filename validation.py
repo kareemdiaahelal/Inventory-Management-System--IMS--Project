@@ -1,7 +1,6 @@
 def is_valid_name(name):
     return len(name) > 1 and all(char.isalpha() or char in [' ', '_'] for char in name)
 
-
 def is_valid_age(age):
     return age.isdigit() and int(age) > 0 and len(age) < 3
 

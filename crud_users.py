@@ -86,7 +86,7 @@ def main():
         print("7. Make an Inventory Report")
         print("8. Exit")
 
-        choice = input("Enter your choice: ").split()
+        choice = input("Enter your choice: ").strip()
 
         if choice == "1":
             users = read_users()
@@ -161,3 +161,4 @@ def main():
         
         else:
             print(colored("Invalid choice. Please try again.", "red"))
+main()

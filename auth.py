@@ -2,7 +2,7 @@ import json
 import hashlib
 from termcolor import colored
 import crud_users
-import products
+import crud_products
 import validation
 
 DATA_FILE = "users.json"
@@ -28,8 +28,6 @@ def generate_user_id(users):
         return len(users) + 1
     return 1
 
-
-
 def register():
     global current_user
     users = crud_users.read_users()
@@ -51,7 +49,7 @@ def register():
         print(colored("Invalid email format.", "red"))
         return
     if not validation.is_valid_age(age):
-        print(colored("Invalid age. Age must be a positive number.", "red"))
+        print(colored("Invalid Age format.", "red"))
         return
     if not validation.is_valid_password(password):
             print(colored("Invalid password format. password must be with length > 5.", "red"))
@@ -82,8 +80,6 @@ def register():
     print(colored("Registration successful!", "green"))
     post_login_menu(new_user)
 
-
-
 def login():
     global current_user
     users = crud_users.read_users()
@@ -106,7 +102,6 @@ def login():
 
     post_login_menu(user)
 
-
 def post_login_menu(user):
     if is_admin():
         print(colored("\n====================== Admin Post-Login Menu ======================", "cyan"))
@@ -118,7 +113,7 @@ def post_login_menu(user):
         if choice == "1":
             crud_users.main()
         elif choice == "2":
-            products.main()
+            crud_products.main()
         elif choice == "3":
             logout()
         else:
@@ -131,19 +126,21 @@ def post_login_menu(user):
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
-            products.main()
+            crud_products.main()
         elif choice == "2":
             logout()
         else:
             print(colored("Invalid choice. Returning to main menu.", "red"))
+
 def is_logged_in():
     return current_user is not None
 
 def get_current_user():
     if is_logged_in():
         return current_user
-    print(colored("No user is logged in.", "yellow"))
-    return None
+    else:
+        print(colored("No user is logged in.", "yellow"))
+        return None
 
 def logout():
     global current_user
