@@ -169,4 +169,4 @@ def main():
         
         else:
             print(colored("Invalid choice. Please try again.", "red"))
-# main()
+main()
