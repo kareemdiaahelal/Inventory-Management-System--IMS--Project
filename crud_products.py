@@ -3,7 +3,7 @@ from termcolor import colored
 import auth
 import Report
 from tabulate import tabulate
-import auth
+
 DATA_FILE = "products.json"
 
 def main():
@@ -59,10 +59,9 @@ def user_choice(choice):
             add_product(name, price, quantity)
 
         except ValueError as e:
-            print(f"Invalid input: {e}. Please try again.")
+            print(colored(f"Invalid input: {e}. Please try again.","light_red"))
 
     elif choice == "3":
-        view_products()
         delete_product()
 
     elif choice == "4":
@@ -71,9 +70,9 @@ def user_choice(choice):
     elif choice == "5":
         view_products()
         product_id = int(input("Enter product ID to edit: "))
-        new_name = input("Enter new name (press Enter to not edit name): ").strip()
-        new_price =  float(input("Enter new price (press Enter to not edit price): "))
-        new_quantity = int(input("Enter new quantity (press Enter to not edit quantity): "))
+        new_name = input("Enter new name: ").strip()
+        new_price =  float(input("Enter new price: "))
+        new_quantity = int(input("Enter new quantity: "))
         update_product(product_id, new_name, new_price, new_quantity)
 
     elif choice == "6":
@@ -140,25 +139,34 @@ def delete_product():
     except ValueError:
         print(colored("Invalid choice! Please choose 1 or 2.","red"))
     if delete_by == "1":
-        product_name = input("Enter the name of the product: ").strip()
-        for product in products:
-            if product['name'] == product_name:
+        try:
+            product_name = input("Enter the name of the product: ")
+            product =next((product for product in products if product["name"] == product_name), None)
+            if product:
                 products.remove(product)
-                print(colored("Product deleted successfully!",'green'))
-                break
+                print(colored("Product deleted successfully.","green"))
             else:
-                print(colored("Product not found!",'red'))
-                break
+                print(colored("Product not found.","red"))
+                return
+
+        except ValueError as e:
+            print(colored(f"Invalid Name : error ( {e} )","light_red"))
+            return
     elif delete_by == "2":
-        product_id = int(input("Enter the ID of the product: "))
-        for product in products:
-            if product['id'] == product_id:
+        try:
+            product_id = int(input("Enter the ID of the product: "))
+            product =next((product for product in products if product["id"] == product_id), None)
+            if product:
                 products.remove(product)
-                print(colored("Product deleted successfully!",'green'))
-                break
+                print(colored("Product deleted successfully.","green"))
             else:
-                print(colored("Product not found!",'red'))
-                break
+                print(colored("Product not found.","red"))
+                return
+
+        except ValueError as e:
+            print(colored(f"Invalid ID : error ( {e} )","light_red"))
+            return
+    
     save_products(products)
 
 def product_search():
@@ -189,7 +197,7 @@ def search_by_name(name):
                 ]]
             print(tabulate(data, headers=headers, tablefmt="rounded_outline"))   # Make search case-insensitive
             return product
-    print("No products found with that name","red")
+    print(colored("No products found with that name","red"))
     return None
 
 def search_by_id(id):
@@ -206,7 +214,7 @@ def search_by_id(id):
                 ]]
             print(tabulate(data, headers=headers, tablefmt="rounded_outline"))   # Make search case-insensitive
             return product
-    print("No products found with that id","red")
+    print(colored("No products found with that id","red"))
     return None
 
 def update_product(product_id, new_name=None, new_price=None, new_quantity=None):

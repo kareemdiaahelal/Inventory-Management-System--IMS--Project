@@ -15,3 +15,4 @@ def is_valid_password(password):
 
 def is_valid_role(role):
     return role in ["admin", "user"]
+

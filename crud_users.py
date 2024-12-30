@@ -40,7 +40,7 @@ def update_user_by_email(email, new_data):
 
 def update_user_by_id(user_id, new_data):
     users = read_users()
-    user = next((user for user in users if user["id"] == user_id), None)
+    user = next((user for user in users if user["id"] == int(user_id)), None)
 
     if not user:
         print(colored("User not found.", "red"))
@@ -61,10 +61,13 @@ def delete_user_by_email(email):
     users.remove(user)
     write_users(users)
     print(colored("User deleted successfully.", "green"))
+    if user['email'] == auth.current_user['email']:
+        auth.logout()
+        auth.main()
 
 def delete_user_by_id(user_id):
     users = read_users()
-    user = next((user for user in users if user["id"] == user_id), None)
+    user = next((user for user in users if user["id"] == int(user_id)), None)
 
     if not user:
         print(colored("User not found.", "red"))
@@ -73,6 +76,9 @@ def delete_user_by_id(user_id):
     users.remove(user)
     write_users(users)
     print(colored("User deleted successfully.", "green"))
+    if user['email'] == auth.current_user['email']:
+        auth.logout()
+        auth.main()
 
 def main():
     while True:
@@ -91,8 +97,8 @@ def main():
         if choice == "1":
             users = read_users()
             if users:
-                headers = ["ID", "Name", "Email", "Age"]
-                data = [[user.get("id"), user.get("name"), user.get("email"), user.get("age")] for user in users]
+                headers = ["ID", "Name", "Email", "Age","Role"]
+                data = [[user.get("id"), user.get("name"), user.get("email"), user.get("age"), user.get("role")] for user in users]
                 print(tabulate(data, headers=headers, tablefmt="rounded_outline"))
             else:
                 print(colored("No users found.", "yellow"))
@@ -101,7 +107,9 @@ def main():
             email = input("Enter the user's email: ")
             user = read_user_by_email(email)
             if user:
-                print(json.dumps(user, indent=4))
+                headers = ["ID", "Name", "Email", "Age","Role"]
+                data = [[user.get("id"), user.get("name"), user.get("email"), user.get("age"), user.get("role")]]
+                print(tabulate(data, headers=headers, tablefmt="rounded_outline"))
             else:
                 print(colored("User not found.", "red"))
 
@@ -161,4 +169,4 @@ def main():
         
         else:
             print(colored("Invalid choice. Please try again.", "red"))
-main()
+# main()
