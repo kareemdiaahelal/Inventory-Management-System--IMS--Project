@@ -1,4 +1,3 @@
-
 # Inventory Management System
 
 ## Overview
@@ -129,21 +128,3 @@ Enter your choice: _
 - **Language**: Python
 - **Database**: json file
 - **report data**: HTML & CSS
-
----
-
-## Contributing
-
-Contributions are welcome! If you'd like to improve the system, feel free to fork the repository and submit a pull request.
-
----
-
-## Author
-
-- **yousef walid**
-- Contact: yousef@sut.edu.eg
-- GitHub: [githup](https://github.com/yw2006)
-
----
-
-Let me know if you need to customize this for your specific project!
